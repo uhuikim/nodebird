@@ -1,11 +1,16 @@
 import React, { useCallback, useState } from "react";
 import propTypes from "prop-types";
 import { PlusOutlined } from "@ant-design/icons";
+import ImagesZoom from "./ImagesZoom";
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImageZoom] = useState(false);
   const onZoom = useCallback(() => {
     setShowImageZoom(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setShowImageZoom(false);
   }, []);
 
   // button이나 input이 아닌 태그에 onClick이벤트를 넣어줄 떄는 role="presentation" 을 넣어주는 것이 좋다.
@@ -20,6 +25,7 @@ const PostImages = ({ images }) => {
           alt={images[0].src}
           onClick={onZoom}
         />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
@@ -41,6 +47,7 @@ const PostImages = ({ images }) => {
           alt={images[1].src}
           onClick={onZoom}
         />
+        {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
@@ -68,6 +75,7 @@ const PostImages = ({ images }) => {
         <br />
         {images.length - 1}개의 사진 더보기
       </div>
+      {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
     </>
   );
 };

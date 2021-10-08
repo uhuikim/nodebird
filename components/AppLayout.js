@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import propTypes from "prop-types";
 import Link from "next/link";
+import { createGlobalStyle, createGolbalStyle } from "styled-components";
 
 import { Input, Menu, Row, Col } from "antd";
 import UserProfile from "./UserProfile";
@@ -12,11 +13,28 @@ const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
 
+// ant design gutter로 인해 가로 스크롤이 생기는 것을 방지하는 코드(ant css 문제)
+const Global = createGlobalStyle`
+  .ant-row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .ant-col::first-child{
+    padding-left: 0 !important;
+  }
+
+  .ant-col::last-child{
+    padding-left: 0 !important;
+  }
+`;
+
 const AppLayout = ({ children }) => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   return (
     <div>
+      <Global />
       <Menu mode="horizontal">
         <Menu.Item>
           <Link href="/">
@@ -37,7 +55,7 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
       </Menu>
-      <Row>
+      <Row gutter={8}>
         <Col xs={24} md={6}>
           {isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
